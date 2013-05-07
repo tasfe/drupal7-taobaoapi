@@ -1,0 +1,13 @@
+name = Taobao Api
+description = "Integrate Taobao Api."
+package = Taobao Api
+core = 7.x
+version = 7.x-1.0
+
+files[] = taobao.module
+files[] = taobao.install
+files[] = taobao.admin.inc
+
+dependencies[] = http_client
+
+configure=admin/config/taobaoapi/settings
