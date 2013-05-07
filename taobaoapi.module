@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ * module file taobaoapi
+ * 
+ */
+
+/**
+ * Implementation of hook_menu().
+ * 
+ * Define menus for taobao api configurations and pages
+ * 
+ * @return array
+ */
+function taobaoapi_menu() {
+  $items['admin/config/taobaoapi/settings'] = array(
+    'title' => t('Taobao Api configuration'),
+    'description' => t('Configure taobao api parameters'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('taobaoapi_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'taobaoapi.admin.inc',
+  );
+  
+  return $items;
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function taobaoapi_init() {
+  module_load_include('inc', 'taobaoapi', 'includes/taobaoapi.class');
+}
+
+/**
+ * Initialize taobaoapi class instance.
+ * Call this method when using taobaoapi from the other module.
+ * 29Invalid app Keyisv.appkey-not-exists
+ * @return object
+ */
+function taobaoapi_get_instance() {
+  $tbapi = new TaobaoApiUtil();
+  
+  if (variable_get('taobaoapi_debug', FALSE)) {
+    $tbapi->taobaoApiUtilSetEndpoint(variable_get('taobaoapi_sandbox'));
+  }
+  else {
+    $tbapi->taobaoApiUtilSetEndpoint(variable_get('taobaoapi_production_endpoint'));
+  }
+  
+  return $tbapi;
+}
